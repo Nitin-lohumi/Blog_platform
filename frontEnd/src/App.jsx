@@ -19,6 +19,7 @@ function App() {
                 <Route path="/auth/login" element={<Login />} />
                 <Route path="/createBlog" element={<CreateBlog />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path='/Create_blog' element={<Home post={false}/>}/>
             </Routes>
         </Router>
     );

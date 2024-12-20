@@ -2,6 +2,9 @@ body{
     margin:0;
     padding:0;
 }
+.homepage{
+    display: flex;
+}
 .login_page{
     width:27%;
     margin: auto;
@@ -159,20 +162,54 @@ body{
     color:rgb(1, 16, 17);
     text-shadow: 1px 1px 3px rgb(200, 246, 200);
 }
-/* * ************************************************************************************************************ */
-/* ***************************************************headerbody************************************************************** */
+/* * ********************************************************Header**************************************************** */
 .header{
-    border:1px solid black;
-    padding:10px;
-    position:fixed;
-    z-index: 10;
+    width:100%;
+    /* border:1px solid black; */
+    box-shadow: 1px 1px 1px gray;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top:0;
+    left: 0;
+    z-index: 1000;
+    background-color: #2a0af6;
 }
-.headerList li{
+.header .headerList{
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+}
+.header .headerList li{
     cursor: pointer;
 }
-
-
-
-
-
-/* *********************************************************************************************************************** */
+/* ************************************************************Profile**************************************************** */
+.Content .Container{
+    /* border:1px solid black; */
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    padding-top: 23px;
+    overflow-y: hidden;
+    height:100vh;
+}
+.Profile_container{
+    /* border:1px solid black; */
+    display: flex;
+    width: fit-content;
+    text-wrap:wrap;
+    overflow-y: auto;
+    box-shadow: 1px 1px 10px gray;
+}
+.Profile_container .Profile_Div{
+    display: flex;
+    flex-direction: column;
+}
+/* ****************************************************************Post******************************************************* */
+.Blog_Post{
+    /* border:1px solid black; */
+    overflow-y: auto;
+    padding:10px;
+    text-transform: capitalize;
+    text-wrap:wrap;
+}

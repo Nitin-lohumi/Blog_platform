@@ -1,15 +1,14 @@
 import React from "react";
-const Header = ({handleNavigatePost,handleNavigateCreateBlog,handleNavigateProfile}) => {
+const Header = ({handleNavigatePost,handleNavigateCreateBlog}) => {
   return (
     <>
-        <div className="flex w-full max-w-full items-center justify-between overflow-x-auto header">
-          <div className="w-full">
+        <div className="header">
+          <div className="">
             <h1>BLOG PLATFROM</h1>
           </div>
-          <ul className="flex list-none gap-4 h-fit break-words flex-shrink-0 headerList">
+          <ul className="headerList">
             <li onClick={handleNavigatePost} >post</li>
             <li onClick={handleNavigateCreateBlog}>Create Blog</li>
-            <li onClick={handleNavigateProfile}>profile</li>
           </ul>
         </div>
     </>
