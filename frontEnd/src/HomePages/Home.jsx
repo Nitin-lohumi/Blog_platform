@@ -11,7 +11,6 @@ const Home = () => {
 
   const [NavigatePost, setNavigatePost] = useState(true);
   const [NavigatePProfile, setNavigateProfile] = useState(false);
-  const [NavigateCreateBlog, setNavigateCreateBlog] = useState(false);
   const userData = async () => {
     try {
       const fetch = await axois.get("http://localhost:3000/auth/ShowUser", {
@@ -22,38 +21,41 @@ const Home = () => {
       console.log(res.user);
     } catch (error) {
       console.log(error);
-      navigate("/auth/login");
+      // navigate("/auth/login");
     }
   };
   useEffect(() => {
     userData();
   }, []);
 
-
-  const handleNavigatePost =()=>{
+  const handleNavigatePost = () => {
     setNavigatePost(true);
-    setNavigateCreateBlog(false);
     setNavigateProfile(false);
-  }
-  const handleNavigateCreateBlog =()=>{
+  };
+  const handleNavigateCreateBlog = () => {
     setNavigatePost(false);
-    setNavigateCreateBlog(true);
     setNavigateProfile(false);
-  }
-  const handleNavigateProfile=()=>{
+  };
+  const handleNavigateProfile = () => {
     setNavigatePost(false);
-    setNavigateCreateBlog(false);
     setNavigateProfile(true);
-  }
+  };
   return (
     <>
-      <div className="flex flex-col w-screen break-words m-auto">
-        <Header
-          handleNavigatePost={handleNavigatePost}
-          handleNavigateCreateBlog={handleNavigateCreateBlog}
-          handleNavigateProfile={handleNavigateProfile}/>
-        <div className="pt-12 text-center">
-            {NavigatePost?<Post/>:NavigatePProfile?<Profile/>:<CreateBlog/>}
+      <div className="homepage">
+        <div className="Content">
+          <Header
+            handleNavigatePost={handleNavigatePost}
+            handleNavigateCreateBlog={handleNavigateCreateBlog}
+          />
+          <div className="Container">
+            <div className="Profile_container">
+              <Profile />
+            </div>
+            <div className="pt-3 text-center Blog_Post">
+              {NavigatePost ? <Post /> : <CreateBlog />}
+            </div>
+          </div>
         </div>
       </div>
     </>
