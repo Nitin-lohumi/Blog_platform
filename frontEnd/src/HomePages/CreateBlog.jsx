@@ -2,7 +2,8 @@ import React from "react";
 const CreateBlog =()=>{
   return (
     <>
-    Cretate blog
+    <h1>Create </h1>
+
     </>
   )
 }

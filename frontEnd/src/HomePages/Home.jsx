@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import axois from "axios";
 import { useNavigate } from "react-router-dom";
 import Header from "../AttributesPages/Header";
 import CreateBlog from "./CreateBlog";
 import Profile from "./Profile";
 import Post from "./Post";
+export const Context = createContext();
 const Home = () => {
   const navigate = useNavigate();
   const [DataUser, setDataUser] = useState([]);
-
   const [NavigatePost, setNavigatePost] = useState(true);
   const [NavigatePProfile, setNavigateProfile] = useState(false);
   const userData = async () => {
@@ -21,7 +21,7 @@ const Home = () => {
       console.log(res.user);
     } catch (error) {
       console.log(error);
-      // navigate("/auth/login");
+      navigate("/auth/login");
     }
   };
   useEffect(() => {
@@ -42,6 +42,7 @@ const Home = () => {
   };
   return (
     <>
+      <Context.Provider value={{ProfileData:DataUser}}>
       <div className="homepage">
         <div className="Content">
           <Header
@@ -58,6 +59,7 @@ const Home = () => {
           </div>
         </div>
       </div>
+      </Context.Provider>
     </>
   );
 };
