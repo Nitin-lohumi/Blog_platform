@@ -1,7 +1,9 @@
 import React from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-const Logout =()=>{
+import Button from "../AttributesPages/Button";
+import { RiLogoutCircleLine } from "react-icons/ri";
+const Logout =({bg="red"})=>{
     const navigate = useNavigate();
      const handlelogout = async () => {
         try {
@@ -24,8 +26,8 @@ const Logout =()=>{
   return(
     <>
      <div>
-        <form action=""  onSubmit={handlelogout} method="GET">
-        <button>logout</button>
+        <form action=""  onSubmit={handlelogout} method="GET" className="flex items-center p-0 m-0 w-full">
+        <Button btnName={<RiLogoutCircleLine/>} btnColor={"white"} btnBackground={bg} />
         </form>
       </div>
     </>
