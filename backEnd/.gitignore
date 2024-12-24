@@ -1,4 +1,4 @@
-.env
+/.env
 config/CloudinaryConfig.js
 config.json
 node_modules
