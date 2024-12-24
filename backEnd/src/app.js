@@ -7,7 +7,9 @@ const cors = require('cors');
 const session = require('express-session');
 const router = require('../routes/AuthRoutes');
 const passport = require('passport');
-
+const path = require("path");
+const files = require("../routes/UpLoadFiles");
+app.use('../ProfileImage', express.static(path.join(__dirname, '../ProfileImage')));
 app.use(cors({
   origin:"http://localhost:5173",
   methods:"GET,POST,PUT,DELETE",
@@ -26,22 +28,22 @@ app.use(session({
   },
 }));
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
 app.use(passport.initialize());
 app.use(passport.session());
 
-
+app.use(express.json({ limit: '50mb' }));
 app.use('/auth',router);
+app.use('/upload',files);
 
 app.get('/',(req,res)=>{
   res.send("helllo world");
 })
-
 app.get('/dashbord',(req,res)=>{
   res.send("this is a dash bord");
-  console.log()
 })
+
 app.listen(process.env.PORT,()=>{
   console.log("listing at port number ",process.env.PORT);
 })

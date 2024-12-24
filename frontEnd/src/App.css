@@ -10,6 +10,7 @@ body{
 }
 .homepage{
     display: flex;
+    justify-content: center;
 }
 .login_page{
     width:27%;
@@ -191,11 +192,17 @@ body{
     cursor: pointer;
 }
 /* ************************************************************Profile**************************************************** */
+.Content{
+    max-width:110%;
+    width: 110%;
+}
 .Content .Container{
     /* border:1px solid black; */
     display: grid;
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 1.2fr 3fr;
     padding-top: 23px;
+    width:max-content;
+    margin: auto;
     overflow-y: hidden;
     height:500px;  
     max-height: 500px;
@@ -212,6 +219,7 @@ body{
     display: flex;
     flex-direction: column;
     width: 100%;
+    overflow-x: hidden;
 }
 .Profile_Div .MenuOptionDIV{
     display: flex;
@@ -259,9 +267,10 @@ body{
 .Profile_Div .ContainerImage{
   display: flex;
   flex-direction: column;
-  width:70%;
-  max-width:300px;
+  width:280px;
+  max-width:280px;
   max-height:200px;
+  padding: 0 20px;
   position: relative;
   top:0;
   left:0;
@@ -272,7 +281,7 @@ body{
     width: 300px;
     height:200px;
     margin:auto;
-    object-fit: cover;
+    object-fit: center;
 }
 .Profile_Div .ContainerImage .ChooseImage{
     display: flex;
