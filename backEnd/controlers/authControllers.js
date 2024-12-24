@@ -1,5 +1,5 @@
  const loginSuccess = (req, res) => {
-    if (req.user||req.session.user) {
+    if (req.user||req.session.user) {//google login or manual login
         res.status(200).json({
         message: 'Login successful',
         user: req.user||req.session.user,

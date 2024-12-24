@@ -18,7 +18,6 @@ const Home = () => {
       });
       const res = fetch.data;
       setDataUser(res.user);
-      console.log(res.user);
     } catch (error) {
       console.log(error);
       navigate("/auth/login");
@@ -43,13 +42,13 @@ const Home = () => {
   return (
     <>
       <Context.Provider value={{ProfileData:DataUser}}>
-      <div className="homepage">
-        <div className="Content">
+      <div className="homepage w-full">
+        <div className="Content max-w-screen">
           <Header
             handleNavigatePost={handleNavigatePost}
             handleNavigateCreateBlog={handleNavigateCreateBlog}
           />
-          <div className="Container">
+          <div className="Container w-full border">
             <div className="Profile_container">
               <Profile />
             </div>
