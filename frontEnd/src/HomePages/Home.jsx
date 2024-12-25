@@ -53,7 +53,8 @@ const Home = () => {
               <Profile />
             </div>
             <div className="pt-3 text-center Blog_Post">
-              {NavigatePost ? <Post /> : <CreateBlog />}
+              {/* {NavigatePost ? <Post /> : <CreateBlog />} */}
+              <CreateBlog/>
             </div>
           </div>
         </div>
