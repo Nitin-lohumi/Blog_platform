@@ -223,7 +223,8 @@ body {
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-height: 460px;
+  border:1px solid black;
+  max-height: fit-content;
   margin: 4px;
   border-radius: .4rem;
   overflow-x: hidden;
@@ -441,10 +442,17 @@ body {
 }
 .Blog_Post .UserSPost .posts .headerPost .TitleName{
   display: flex;
-  flex-direction: column;
-  align-items: baseline;
+  flex-direction: row;
+  width: 86%;
+  justify-content: space-between;
+  align-items: center;
   gap: 1px;
 }
+
+.Blog_Post .UserSPost .posts .headerPost .TitleName .PostsMenu{
+  cursor: pointer;
+}
+
 .Blog_Post .UserSPost .posts .headerPost .TitleName h1{
   font-size: 22px;
   cursor:pointer;
