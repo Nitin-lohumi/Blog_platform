@@ -10,7 +10,8 @@ const Home = () => {
   const navigate = useNavigate();
   const [DataUser, setDataUser] = useState([]);
   const [NavigatePost, setNavigatePost] = useState(true);
-  const [NavigatePProfile, setNavigateProfile] = useState(false);
+  const [NavigateProfile, setNavigateCreatePost] = useState(false);
+  const [activeHere,setActiveHere] = useState("post");
   const userData = async () => {
     try {
       const fetch = await axois.get("http://localhost:3000/auth/ShowUser", {
@@ -25,26 +26,31 @@ const Home = () => {
   };
   useEffect(() => {
     userData();
+    navigate("/home/posts");
+    setActiveHere("post");
   }, []);
-
+  
   const handleNavigatePost = () => {
+    setActiveHere("post");
     setNavigatePost(true);
-    setNavigateProfile(false);
+    setNavigateCreatePost(false);
   };
   const handleNavigateCreateBlog = () => {
+    setActiveHere("CreateBlog");
     setNavigatePost(false);
-    setNavigateProfile(false);
+    setNavigateCreatePost(false);
   };
-  const handleNavigateProfile = () => {
-    setNavigatePost(false);
-    setNavigateProfile(true);
-  };
+  // const handleNavigateProfile = () => {
+  //   setNavigatePost(false);
+  //   setNavigateCreatePost(true);
+  // };
   return (
     <>
       <Context.Provider value={{ProfileData:DataUser}}>
       <div className="homepage w-full">
         <div className="Content max-w-screen">
           <Header
+            activeHere={activeHere}
             handleNavigatePost={handleNavigatePost}
             handleNavigateCreateBlog={handleNavigateCreateBlog}
           />
@@ -53,8 +59,8 @@ const Home = () => {
               <Profile />
             </div>
             <div className="pt-3 text-center Blog_Post">
-              {/* {NavigatePost ? <Post /> : <CreateBlog />} */}
-              <CreateBlog/>
+              {NavigatePost ? <Post setNavigatePost={setNavigatePost} setNavigateProfile={setNavigateCreatePost}/> : 
+                  <CreateBlog setNavigatePost={setNavigatePost} setNavigateCreatePost={setNavigateCreatePost}/>}
             </div>
           </div>
         </div>
