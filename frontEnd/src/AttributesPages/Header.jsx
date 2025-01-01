@@ -1,5 +1,7 @@
 import React from "react";
-const Header = ({handleNavigatePost,handleNavigateCreateBlog}) => {
+import { Link } from "react-router-dom";
+const Header = ({handleNavigatePost,handleNavigateCreateBlog,activeHere}) => {
+
   return (
     <>
         <div className="header">
@@ -7,8 +9,12 @@ const Header = ({handleNavigatePost,handleNavigateCreateBlog}) => {
             <h1>BLOG PLATFROM</h1>
           </div>
           <ul className="headerList">
-            <li onClick={handleNavigatePost} >post</li>
-            <li onClick={handleNavigateCreateBlog}>Create Blog</li>
+            <Link  onClick={handleNavigatePost} className="headerLinks"
+             style={{borderBlockEnd:activeHere=="post"?"3px solid white":"transparent",padding:activeHere=="post"?"0px":"3px",
+              opacity:activeHere=="post"?"1":"0.6"}}
+             to={"/home/posts"}>post</Link>
+            <Link onClick={handleNavigateCreateBlog} className="headerLinks"
+            style={{borderBlockEnd:activeHere=="CreateBlog"?"3px solid white":"transparent",padding:activeHere=="CreateBlog"?"0px":"3px",opacity:activeHere=="CreateBlog"?"1":"0.6"}} to={"/home/CreateBlog"}>Create Blog</Link>
           </ul>
         </div>
     </>
