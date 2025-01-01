@@ -4,8 +4,8 @@ import Image from "../AttributesPages/Image";
 import Logout from "../LoginPages/Logout";
 import { Context } from "./Home";
 import axios from "axios";
-import imageCompression from "browser-image-compression";
-const Profile =()=>{
+import imageCompression from "browser-image-compression"
+const Profile =({postId,setImageprofile})=>{
   const [load,setLoad]= useState(false);
   const contextValue = useContext(Context);
   const [ClickMenu,SetClickMenu]= useState(false);
@@ -14,7 +14,7 @@ const Profile =()=>{
   const ref2 = useRef();
   const [base64Data, setBase64Data] = useState("");
   const [image,setImage] =useState(null);
-
+  const [userProfile,setUserProfile] = useState(null);
   const HandleOptionMenuClick =()=>{
     if(ClickMenu==true){
       SetClickMenu(false);
@@ -66,28 +66,41 @@ const Profile =()=>{
   const handleSaveImage = async(imageurl)=>{
       try {
         setLoad(true);
-        console.log(contextValue.ProfileData._id);
         const url =await axios.post(`http://localhost:3000/upload/Profile/${contextValue.ProfileData._id}`,{image:imageurl});
-        console.log(url);
+        setImageprofile(true);
         setLoad(false);
       } catch (error) {
-        
+         console.log(error);
       }
     }
+    useEffect(()=>{
+    const fetchUser=async()=>{
+      try {
+        const res = await axios.get(`http://localhost:3000/posts/userProfile/${postId}`);
+        setUserProfile(res.data.data);
+        console.log(res.data.data);
+       } catch (error) {
+        console.log(error);
+       }
+      }
+     if((postId!=contextValue.ProfileData._id)&&postId!==""){
+       fetchUser();
+      }
+     },[postId]);
   return (
     <>
      <div className="Profile_Div">
-     <div className="MenuOptionDIV">
-      <p onClick={HandleOptionMenuClick} ref={Menu} className="MenuOption"><CiMenuKebab/></p>
+      {postId===contextValue.ProfileData._id?<div>
+      <div className="MenuOptionDIV">
+      <div onClick={HandleOptionMenuClick} ref={Menu} className="MenuOption"><CiMenuKebab/></div>
        <div className="OptionMenu" style={{display:ClickMenu?"block":"none"}}>
-        {/* <div ref={ref1}>Setting</div> */}
         <div ref={ref2}><Logout/></div>
        </div>
      </div>
      {/* contian the image from user  */}
      <div className="ContainerImage">
       <Image 
-      base64Data={base64Data}
+       base64Data={base64Data}
        handleImageInput={handleImageInput}
        load={load}
        />
@@ -95,15 +108,27 @@ const Profile =()=>{
     {/* user info */} 
       <div className="UserInfo flex flex-col mt-2">
        <div className="flex flex-col p-2 border">
-          <h1 className="text-center p-2">{contextValue.ProfileData.name}</h1>
+          <h1 className="text-center p-2 text-2xl font-bold">{contextValue.ProfileData.name}</h1>
           <p className="text-center p-3"><i className="font-thin text-wrap text-center">{contextValue.ProfileData.email}</i>
           </p>
        </div>
       </div>
       {/* Setting */}
       <div className="flex w-full border justify-end items-center p-4">
-      <p>{" logout -"}</p> <Logout logoutname={"logout -"} bg={"red"}/>
+      <p>{" logout -"}</p> <Logout logoutname={"logout -"} bg={"red"}/></div>
+      </div>:
+      <>
+      {userProfile?<div className="UserInfo flex flex-col mt-2">
+       {/* <img  className="flex w-32 h-32 mt-10 mb-5 rounded-full m-auto"src={userProfile.picture} alt="profile picture" /> */}
+       <img  className="flex w-64 h-64 mt-10 mb-5 rounded m-auto"src={userProfile.picture} alt="profile picture" />
+       <div className="flex flex-col p-2 border">
+          <h1 className="text-center p-2 text-2xl font-bold">{userProfile.name}</h1>
+          <p className="text-center p-3"><i className="font-thin text-wrap text-center">{userProfile.email}</i>
+          </p>
       </div>
+       </div>:""}
+      </>
+      }
      </div>
 
     </>

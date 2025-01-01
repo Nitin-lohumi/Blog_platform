@@ -1,4 +1,5 @@
 const Usermodel = require("../model/user_model");
+const post = require("../model/PostModel");
 const config_cloud = require("../config/CloudinaryConfig");
 const UploadProfileImage =  async(req,res)=>{
   try {
@@ -17,6 +18,12 @@ const UploadProfileImage =  async(req,res)=>{
       res.status(500).json({ message: 'Error uploading to Cloudinary' ,susess:false});
     }
     const image = await Usermodel.findByIdAndUpdate(id,{picture:result.secure_url},{new:true});
+    const postImage = await post.findOne({uploadByUserID:id});
+    if(postImage){
+      postImage.profile_picture=image.picture;
+      console.log(postImage.profile_picture);
+      postImage.save(); 
+    }
     if(!image){
       res.status(500).json({ message: "Error for updating in database ",susess:false });
     }

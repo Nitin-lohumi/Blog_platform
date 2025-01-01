@@ -12,6 +12,8 @@ const Home = () => {
   const [NavigatePost, setNavigatePost] = useState(true);
   const [NavigateProfile, setNavigateCreatePost] = useState(false);
   const [activeHere,setActiveHere] = useState("post");
+  const [PostId,setPostIds] =useState("");
+  const [imageProfile,setImageprofile] = useState(false);
   const userData = async () => {
     try {
       const fetch = await axois.get("http://localhost:3000/auth/ShowUser", {
@@ -19,6 +21,7 @@ const Home = () => {
       });
       const res = fetch.data;
       setDataUser(res.user);
+      setPostIds(res.user._id);
     } catch (error) {
       console.log(error);
       navigate("/auth/login");
@@ -52,14 +55,14 @@ const Home = () => {
           <Header
             activeHere={activeHere}
             handleNavigatePost={handleNavigatePost}
-            handleNavigateCreateBlog={handleNavigateCreateBlog}
-          />
+            handleNavigateCreateBlog={handleNavigateCreateBlog}/>
           <div className="Container w-full border">
             <div className="Profile_container">
-              <Profile />
+              <Profile postId={PostId} setImageprofile={setImageprofile}/>
             </div>
             <div className="pt-3 text-center Blog_Post">
-              {NavigatePost ? <Post setNavigatePost={setNavigatePost} setNavigateProfile={setNavigateCreatePost}/> : 
+              {NavigatePost ?
+               <Post setNavigatePost={setNavigatePost}  imageProfile={imageProfile} setPostIds={setPostIds} setNavigateProfile={setNavigateCreatePost}/> : 
                   <CreateBlog setNavigatePost={setNavigatePost} setNavigateCreatePost={setNavigateCreatePost}/>}
             </div>
           </div>

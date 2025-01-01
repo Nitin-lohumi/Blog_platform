@@ -8,8 +8,10 @@ const Image = ({handleImageInput, base64Data,load}) => {
 
   return (
     <>
-      <div>
-       {load?<ReactLoading type={"spinningBubbles"} color={"black"} height={67} width={75} />: <><img
+      <div className="flex items-center justify-center">
+       {load?<ReactLoading type={"spinningBubbles"} color={"black"} height={67} width={75}/>: 
+       <>
+       <img
           src={base64Data ? base64Data : DBImage ? DBImage : "user.jpg"}
           className="ProfileImage"
         />
