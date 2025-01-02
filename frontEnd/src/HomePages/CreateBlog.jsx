@@ -56,17 +56,15 @@ const CreateBlog = ({setNavigatePost,setNavigateCreatePost}) => {
       setLoading(true);
       const url = `http://localhost:3000/upload/post/${valueContext.ProfileData._id}`;
       const res = await axios.post(url,formdata);
-      console.log(res.data.sucess);
       if(res.data.sucess){
         toast.success("posted sucessfully");
         setLoading(false);
       }
-      
       setTimeout(() => {
         navigate("/home/posts");
         setNavigatePost(true);
         setNavigateCreatePost(false);
-    }, 3000);
+    }, 2000);
 
     } catch (error) {
       setLoading(false);

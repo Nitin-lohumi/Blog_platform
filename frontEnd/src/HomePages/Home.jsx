@@ -10,7 +10,8 @@ const Home = () => {
   const navigate = useNavigate();
   const [DataUser, setDataUser] = useState([]);
   const [NavigatePost, setNavigatePost] = useState(true);
-  const [NavigateProfile, setNavigateCreatePost] = useState(false);
+  const [navigateCreatePost, setNavigateCreatePost] = useState(false);
+  const [NavigateProfile, setNavigateProfile] = useState(false);
   const [activeHere,setActiveHere] = useState("post");
   const [PostId,setPostIds] =useState("");
   const [imageProfile,setImageprofile] = useState(false);
@@ -35,18 +36,22 @@ const Home = () => {
   
   const handleNavigatePost = () => {
     setActiveHere("post");
+    setNavigateProfile(false);
     setNavigatePost(true);
     setNavigateCreatePost(false);
   };
   const handleNavigateCreateBlog = () => {
     setActiveHere("CreateBlog");
+    setNavigateProfile(false);
+    setNavigatePost(false);
+    setNavigateCreatePost(true);
+  };
+  const handleNavigateProfile = () => {
+    setActiveHere("Profile");
+    setNavigateProfile(true);
     setNavigatePost(false);
     setNavigateCreatePost(false);
   };
-  // const handleNavigateProfile = () => {
-  //   setNavigatePost(false);
-  //   setNavigateCreatePost(true);
-  // };
   return (
     <>
       <Context.Provider value={{ProfileData:DataUser}}>
@@ -55,17 +60,22 @@ const Home = () => {
           <Header
             activeHere={activeHere}
             handleNavigatePost={handleNavigatePost}
-            handleNavigateCreateBlog={handleNavigateCreateBlog}/>
-          <div className="Container w-full border">
-            <div className="Profile_container">
+            handleNavigateCreateBlog={handleNavigateCreateBlog}
+            handleNavigateProfile={handleNavigateProfile}
+            />
+
+          <div className="Container w-full border" style={{display:NavigateProfile?"flex":"grid"}} >
+            <div className="Profile_container" style={{display:NavigateProfile?"none":"flex"}}>
               <Profile postId={PostId} setImageprofile={setImageprofile}/>
-            </div>
+            </div>  
             <div className="pt-3 text-center Blog_Post">
               {NavigatePost ?
-               <Post setNavigatePost={setNavigatePost}  imageProfile={imageProfile} setPostIds={setPostIds} setNavigateProfile={setNavigateCreatePost}/> : 
-                  <CreateBlog setNavigatePost={setNavigatePost} setNavigateCreatePost={setNavigateCreatePost}/>}
+               <Post imageProfile={imageProfile} setPostIds={setPostIds} 
+               NavigateProfile={NavigateProfile} handleNavigateCreateBlog={handleNavigateCreateBlog} /> :
+               navigateCreatePost?<CreateBlog setNavigatePost={setNavigatePost} setNavigateCreatePost={setNavigateCreatePost}/>: <Profile  postId={PostId} setImageprofile={setImageprofile} NavigateProfile={NavigateProfile} />}
             </div>
           </div>
+          
         </div>
       </div>
       </Context.Provider>
