@@ -5,7 +5,8 @@ import Logout from "../LoginPages/Logout";
 import { Context } from "./Home";
 import axios from "axios";
 import imageCompression from "browser-image-compression"
-const Profile =({postId,setImageprofile})=>{
+import Post from "./Post";
+const Profile =({postId,setImageprofile,NavigateProfile})=>{
   const [load,setLoad]= useState(false);
   const contextValue = useContext(Context);
   const [ClickMenu,SetClickMenu]= useState(false);
@@ -114,6 +115,8 @@ const Profile =({postId,setImageprofile})=>{
        </div>
       </div>
       {/* Setting */}
+      {NavigateProfile?<h1 className="font-bold text-xl mt-4 mb-6">YOUR POSTS</h1>:""}
+      {NavigateProfile?<Post NavigateProfile={NavigateProfile}/>:""}
       <div className="flex w-full border justify-end items-center p-4">
       <p>{" logout -"}</p> <Logout logoutname={"logout -"} bg={"red"}/></div>
       </div>:

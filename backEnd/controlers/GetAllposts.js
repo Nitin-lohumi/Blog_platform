@@ -1,7 +1,7 @@
 const posts = require("../model/PostModel");
 const GetAllposts = async(req,res)=>{
 try {
-    const userPosts = await posts.find().populate("likes", "name");
+    const userPosts = await posts.find().sort({ createdAt: -1 }).populate("likes", "name");
     if(!userPosts){
         res.status(404).json({msg:"not a posts avilabel to show",sucess:false});
         return;

@@ -1,20 +1,35 @@
 import React, { useEffect, useState } from "react";
-import { FaRegComment } from "react-icons/fa";
 import axios from "axios";
 import { Context } from "./Home";
 import { useContext } from "react";
 import ReactLoading from "react-loading";
-import { FaHeart } from "react-icons/fa";
-import { CiHeart } from "react-icons/ci";
-import { RiDeleteBinLine } from "react-icons/ri";
-import moment from 'moment';
-const Post = ({setPostIds,imageProfile}) => {
+import { Link } from "react-router-dom";
+import SinglePost from "../AttributesPages/SinglePost";
+const Post = ({setPostIds,imageProfile,NavigateProfile,handleNavigateCreateBlog}) => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [expandedDescriptions, setExpandedDescriptions] = useState(null);
+  const [Nopost,setNoPost] = useState(false);
   const contextValue = useContext(Context);
-
   const fetchPosts = async () => {
+    if(NavigateProfile){
+     try {
+      const res=  await axios.get(`http://localhost:3000/posts/OnlyUserPosts/${contextValue.ProfileData._id}`);
+      const updatedPosts = res.data.posts.map((post) => ({
+        ...post,
+        isliked: post.likes.some(
+          (like) => like.userId === contextValue.ProfileData._id
+        ),
+      }));
+      setPosts(updatedPosts);
+      setTimeout(()=>{
+        setNoPost(updatedPosts.length===0); 
+      },2000);
+    } catch (error) {
+      console.log(error);
+    }
+    setLoading(false);
+    }else{
     if (contextValue?.ProfileData?._id) {
       try {
         const res = await axios.get(
@@ -27,14 +42,16 @@ const Post = ({setPostIds,imageProfile}) => {
           ),
         }));
         setPosts(updatedPosts);
+        setTimeout(()=>{
+          setNoPost(updatedPosts.length===0); 
+        },2000);
       } catch (error) {
         console.log(error);
       }
+      setLoading(false);
     }
-    setLoading(false);
+  }
   };
-
-  console.log(imageProfile);
   useEffect(() => {
     setLoading(true);
     fetchPosts();
@@ -73,7 +90,6 @@ const Post = ({setPostIds,imageProfile}) => {
       console.log(error);
     }
   };
-
   return (
     <>
       <div className="UserSPost">
@@ -88,84 +104,17 @@ const Post = ({setPostIds,imageProfile}) => {
           </div>
         ) : posts.length ? (
           posts.map((p) => (
-            <div className="posts" key={p._id}>
-              <div className="headerPost">
-                <img 
-                  onClick={()=>setPostIds(p.uploadByUserID)}
-                  src={p.profile_picture}
-                  alt="Image"
-                  className="postProfileImage"/>
-                <div className="TitleName">
-                  <div className="flex flex-col items-baseline ">
-                  <h1 onClick={()=>setPostIds(p.uploadByUserID)}>{p.posts_UserName}</h1>
-                  <span>{p.title}</span>
-                  </div>
-                  {p.uploadByUserID===contextValue.ProfileData._id?<div className="PostsMenu">
-                    <div className="flex items-center gap-2"><p className="text-l">Delete</p> <RiDeleteBinLine size={25}/></div>
-                  </div>:""}
-                </div>
-              </div>
-              <div className="PostPhotoContainer">
-                <img src={p.image} alt="PostImage" />
-                <div className="liked_Details">
-                  {p.isliked ? (
-                    p.totalLikes > 1 ? (
-                      <>
-                       <div> Liked by <b> you </b> and  <b> {p.totalLikes - 1} </b> <b className="cursor-pointer">others</b></div>
-                      </>
-                    ) : p.totalLikes === 1 ? (
-                       <p>liked by you.</p>
-                    ) : (
-                      ""
-                    )
-                  ) : p.totalLikes > 1 ? (
-                    <>
-                      Liked by <em>{p.likes[0].userName}</em> and{" "}
-                      <b>{p.totalLikes - 1}</b> <b className="cursor-pointer">others</b>
-                    </>
-                  ) : p.totalLikes === 1 ? (
-                    <>{p.likes[0].userName} likes this post</>
-                  ) : (
-                    ""
-                  )}
-                </div>
-                <div className="likeCommentConatiner">
-                  <button onClick={() => submitLike(p._id)}>
-                    {p.isliked ? (
-                      <FaHeart size={40} color="red" />
-                    ) : (
-                      <CiHeart size={40} color="black" />
-                    )}
-                  </button>
-                  <button>
-                    <FaRegComment size={40} color="black" />
-                  </button>
-                </div>
-              </div>
-              <div className="postDiscriptionContainer">
-                <div className="discriptionsPost">
-                  <div className="gap-3 text-gray-900 items-center">
-                    <span className="inline font-thin userDiscription pl-2" onClick={()=>setPostIds(p.uploadByUserID)}>
-                      {p.posts_UserName}
-                    </span>{" "}
-                    {expandedDescriptions === p._id
-                      ? p.description
-                      : p.description.substring(0, 13)}
-                    <span
-                      className="cursor-pointer text-blue-700 pl-3"
-                      onClick={() => handleToggleDescription(p._id)}
-                    >
-                      {expandedDescriptions === p._id ? "Show Less" : "...More"}
-                    </span>
-                  </div>
-                </div>
-                <div className="PostedTime">{"posted  "+moment(p.createdAt).fromNow()}</div>
-              </div>
-            </div>
+           <SinglePost p={p} setPostIds={setPostIds} key={p._id}
+            handleToggleDescription={handleToggleDescription} 
+            submitLike={submitLike}
+            expandedDescriptions={expandedDescriptions}
+            NavigateProfile={NavigateProfile}
+            />
           ))
-        ) : (
-          <p>There are no posts here to show. Please create a post first.</p>
-        )}
+        ) :<div><p className="text-xl font-bold">NO POST YET....</p>{1?<div className="h-48 flex items-center justify-center">
+            <Link onClick={handleNavigateCreateBlog} 
+                to={"/home/CreateBlog"} ><button  className="text-xl p-6 font-semibold text-white bg-green-600 rounded-lg"> Create a BLOG POST</button></Link>
+          </div>:""}</div>}
       </div>
     </>
   );
