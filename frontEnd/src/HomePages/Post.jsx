@@ -5,57 +5,66 @@ import { useContext } from "react";
 import ReactLoading from "react-loading";
 import { Link } from "react-router-dom";
 import SinglePost from "../AttributesPages/SinglePost";
-const Post = ({setPostIds,imageProfile,NavigateProfile,handleNavigateCreateBlog}) => {
+const Post = ({
+  setPostIds,
+  imageProfile,
+  NavigateProfile,
+  handleNavigateCreateBlog,
+}) => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [expandedDescriptions, setExpandedDescriptions] = useState(null);
-  const [Nopost,setNoPost] = useState(false);
+  const [Nopost, setNoPost] = useState(false);
   const contextValue = useContext(Context);
+  const [comment, setComment] = useState("");
+  const [commentsSec, setcommentsSec] = useState([]);
   const fetchPosts = async () => {
-    if(NavigateProfile){
-     try {
-      const res=  await axios.get(`http://localhost:3000/posts/OnlyUserPosts/${contextValue.ProfileData._id}`);
-      const updatedPosts = res.data.posts.map((post) => ({
-        ...post,
-        isliked: post.likes.some(
-          (like) => like.userId === contextValue.ProfileData._id
-        ),
-      }));
-      setPosts(updatedPosts);
-      setTimeout(()=>{
-        setNoPost(updatedPosts.length===0); 
-      },2000);
-    } catch (error) {
-      console.log(error);
-    }
-    setLoading(false);
-    }else{
-    if (contextValue?.ProfileData?._id) {
+    if (NavigateProfile) {
       try {
         const res = await axios.get(
-          `http://localhost:3000/posts/BlogPosts/${contextValue.ProfileData._id}`
+          `http://localhost:3000/posts/OnlyUserPosts/${contextValue.ProfileData._id}`
         );
-        const updatedPosts = res.data.map((post) => ({
+        const updatedPosts = res.data.posts.map((post) => ({
           ...post,
           isliked: post.likes.some(
             (like) => like.userId === contextValue.ProfileData._id
           ),
         }));
         setPosts(updatedPosts);
-        setTimeout(()=>{
-          setNoPost(updatedPosts.length===0); 
-        },2000);
+        setTimeout(() => {
+          setNoPost(updatedPosts.length === 0);
+        }, 2000);
       } catch (error) {
         console.log(error);
       }
       setLoading(false);
+    } else {
+      if (contextValue?.ProfileData?._id) {
+        try {
+          const res = await axios.get(
+            `http://localhost:3000/posts/BlogPosts/${contextValue.ProfileData._id}`
+          );
+          const updatedPosts = res.data.map((post) => ({
+            ...post,
+            isliked: post.likes.some(
+              (like) => like.userId === contextValue.ProfileData._id
+            ),
+          }));
+          setPosts(updatedPosts);
+          setTimeout(() => {
+            setNoPost(updatedPosts.length === 0);
+          }, 2000);
+        } catch (error) {
+          console.log(error);
+        }
+        setLoading(false);
+      }
     }
-  }
   };
   useEffect(() => {
     setLoading(true);
     fetchPosts();
-  }, [contextValue.ProfileData,imageProfile]);
+  }, [contextValue.ProfileData, imageProfile]);
 
   const handleToggleDescription = (postId) => {
     setExpandedDescriptions(expandedDescriptions === postId ? null : postId);
@@ -90,6 +99,24 @@ const Post = ({setPostIds,imageProfile,NavigateProfile,handleNavigateCreateBlog}
       console.log(error);
     }
   };
+
+  async function handleCommentSection(post_id) {
+    try {
+      const res = await axios.get(
+        `http://localhost:3000/posts/BlogPost/showcomments/${post_id}`
+      );
+      if(comment){
+        setComment("");
+      }else{
+        setComment(post_id);
+      }
+      setcommentsSec(res.data.post.comments);
+    } catch (error) {
+      console.log(error);
+      setOpenComment(false);
+    }
+  }
+
   return (
     <>
       <div className="UserSPost">
@@ -104,17 +131,39 @@ const Post = ({setPostIds,imageProfile,NavigateProfile,handleNavigateCreateBlog}
           </div>
         ) : posts.length ? (
           posts.map((p) => (
-           <SinglePost p={p} setPostIds={setPostIds} key={p._id}
-            handleToggleDescription={handleToggleDescription} 
-            submitLike={submitLike}
-            expandedDescriptions={expandedDescriptions}
-            NavigateProfile={NavigateProfile}
-            />
+              <SinglePost
+                p={p}
+                key={p._id}
+                setPostIds={setPostIds}
+                handleToggleDescription={handleToggleDescription}
+                submitLike={submitLike}
+                expandedDescriptions={expandedDescriptions}
+                NavigateProfile={NavigateProfile}
+                handleCommentSection={handleCommentSection}
+                comment={comment}
+                commentsSec={commentsSec}
+              />
           ))
-        ) :<div><p className="text-xl font-bold">NO POST YET....</p>{1?<div className="h-48 flex items-center justify-center">
-            <Link onClick={handleNavigateCreateBlog} 
-                to={"/home/CreateBlog"} ><button  className="text-xl p-6 font-semibold text-white bg-green-600 rounded-lg"> Create a BLOG POST</button></Link>
-          </div>:""}</div>}
+        ) : (
+          <div>
+            <p className="text-xl font-bold">NO POST YET....</p>
+            {Nopost ? (
+              <div className="h-48 flex items-center justify-center">
+                <Link
+                  onClick={handleNavigateCreateBlog}
+                  to={"/home/CreateBlog"}
+                >
+                  <button className="text-xl p-6 font-semibold text-white bg-green-600 rounded-lg">
+                    {" "}
+                    Create a BLOG POST
+                  </button>
+                </Link>
+              </div>
+            ) : (
+              ""
+            )}
+          </div>
+        )}
       </div>
     </>
   );
