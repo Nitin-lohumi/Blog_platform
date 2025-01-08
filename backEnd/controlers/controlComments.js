@@ -47,14 +47,14 @@ const showcomments =async(req,res)=>{
 const deleteComment = async (req, res) => {
   try {
     const { postId, commentId } = req.body;
-    const userid = req.params.id;
+    // const userid = req.params.id;
     const post = await Post.findById(postId);
     if (!post) {
       return res.status(404).json({ msg: "Post not found" });
     }
-    if (post.uploadByUserID != userid) {
-      return res.status(404).json({ msg: "this is not postHolder User" });
-    }
+    // if (post.uploadByUserID != userid) {
+    //   return res.status(404).json({ msg: "this is not postHolder User" });
+    // }
     const commentIndex = post.comments.findIndex((comment) => comment._id.toString() === commentId);
     if (commentIndex === -1) {
       return res.status(404).json({ msg: "Comment not found" });

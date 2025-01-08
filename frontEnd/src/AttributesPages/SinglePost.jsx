@@ -16,7 +16,7 @@ const SinglePost = ({
   NavigateProfile,
   handleCommentSection,
   comment,
-  commentsSec
+  commentsSec,
 }) => {
   const DeletePostByOwner = async (postId) => {
     try {
@@ -96,7 +96,11 @@ const SinglePost = ({
               )}
             </button>
             <button onClick={() => handleCommentSection(p._id)}>
-              {comment==p._id?<FaComment size={40} color="black" />:<FaRegComment size={40} color="black" />}
+              {comment === p._id ? (
+                <FaComment size={40} color="black" />
+              ) : (
+                <FaRegComment size={40} color="black" />
+              )}
             </button>
           </div>
         </div>
@@ -121,7 +125,7 @@ const SinglePost = ({
             </div>
           </div>
           <div className="w-full">
-            {comment!=p._id?(
+            {comment != p._id ? (
               ""
             ) : (
               <CommentSection commentsSec={commentsSec} comment={comment} />
