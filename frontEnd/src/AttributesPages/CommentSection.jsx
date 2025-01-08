@@ -27,6 +27,18 @@ const CommentSection = ({ commentsSec, comment }) => {
       console.error(error);
     }
   };
+  async function handledeletecomment(commentId,postId){
+    console.log(commentId,postId);
+     try {
+  const res = await axios.post(`http://localhost:3000/posts/BlogPost/commentDelete/${values.ProfileData._id}`,
+              {postId:postId,commentId:commentId});
+      if(res.data){
+        setPostComment((prev) => prev.filter((c) => c._id !== commentId));
+      }
+     } catch (error) {
+      console.log(error);
+     }
+  }
 
   return (
     <>
@@ -47,7 +59,7 @@ const CommentSection = ({ commentsSec, comment }) => {
             </div>
             <div className="items-end">
               {v.userId === values.ProfileData._id ? (
-                <button className="m-0 pl-5">
+                <button className="m-0 pl-5" onClick={()=>handledeletecomment(v._id,comment)}>
                   <RiDeleteBinLine />
                 </button>
               ) : (

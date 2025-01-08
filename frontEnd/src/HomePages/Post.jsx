@@ -16,7 +16,7 @@ const Post = ({
   const [expandedDescriptions, setExpandedDescriptions] = useState(null);
   const [Nopost, setNoPost] = useState(false);
   const contextValue = useContext(Context);
-  const [comment, setComment] = useState("");
+  const [comment, setComment] = useState();
   const [commentsSec, setcommentsSec] = useState([]);
   const fetchPosts = async () => {
     if (NavigateProfile) {
@@ -99,23 +99,24 @@ const Post = ({
       console.log(error);
     }
   };
-
   async function handleCommentSection(post_id) {
-    try {
-      const res = await axios.get(
-        `http://localhost:3000/posts/BlogPost/showcomments/${post_id}`
-      );
-      if(comment){
-        setComment("");
-      }else{
-        setComment(post_id);
+    if (comment === post_id) {
+      setComment("");
+      setcommentsSec([]);
+    } else {
+      try {
+        const res = await axios.get(
+          `http://localhost:3000/posts/BlogPost/showcomments/${post_id}`
+        );
+        setComment(post_id); 
+        setcommentsSec(res.data.post.comments); 
+      } catch (error) {
+        console.log(error);
+        setcommentsSec([]);
       }
-      setcommentsSec(res.data.post.comments);
-    } catch (error) {
-      console.log(error);
-      setOpenComment(false);
     }
   }
+  
 
   return (
     <>
