@@ -6,7 +6,6 @@ import { FaRegComment } from "react-icons/fa";
 import { FaComment } from "react-icons/fa";
 import moment from "moment";
 import CommentSection from "./CommentSection";
-import { useState } from "react";
 const SinglePost = ({
   p,
   setPostIds,
@@ -88,9 +87,9 @@ const SinglePost = ({
             )}
           </div>
           <div className="likeCommentConatiner">
-            <button onClick={() => submitLike(p._id)}>
+            <button  onClick={() => submitLike(p._id)}>
               {p.isliked ? (
-                <FaHeart size={40} color="red" />
+                <FaHeart size={40} color="red"/>
               ) : (
                 <CiHeart size={40} color="black" />
               )}

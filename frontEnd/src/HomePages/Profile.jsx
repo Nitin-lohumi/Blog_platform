@@ -92,12 +92,12 @@ const Profile =({postId,setImageprofile,NavigateProfile})=>{
     <>
      <div className="Profile_Div">
       {postId===contextValue.ProfileData._id?<div>
-      <div className="MenuOptionDIV">
+      {/* <div className="MenuOptionDIV">
       <div onClick={HandleOptionMenuClick} ref={Menu} className="MenuOption"><CiMenuKebab/></div>
        <div className="OptionMenu" style={{display:ClickMenu?"block":"none"}}>
         <div ref={ref2}><Logout/></div>
        </div>
-     </div>
+     </div> */}
      {/* contian the image from user  */}
      <div className="ContainerImage">
       <Image 
@@ -108,7 +108,7 @@ const Profile =({postId,setImageprofile,NavigateProfile})=>{
      </div>
     {/* user info */} 
       <div className="UserInfo flex flex-col mt-2">
-       <div className="flex flex-col p-2 border">
+       <div className="flex flex-col p-2">
           <h1 className="text-center p-2 text-2xl font-bold">{contextValue.ProfileData.name}</h1>
           <p className="text-center p-3"><i className="font-thin text-wrap text-center">{contextValue.ProfileData.email}</i>
           </p>
@@ -117,14 +117,14 @@ const Profile =({postId,setImageprofile,NavigateProfile})=>{
       {/* Setting */}
       {NavigateProfile?<h1 className="font-bold text-xl mt-4 mb-6">YOUR POSTS</h1>:""}
       {NavigateProfile?<Post NavigateProfile={NavigateProfile}/>:""}
-      <div className="flex w-full border justify-end items-center p-4">
+      <div className="flex w-full justify-end items-center p-4">
       <p>{" logout -"}</p> <Logout logoutname={"logout -"} bg={"red"}/></div>
       </div>:
       <>
       {userProfile?<div className="UserInfo flex flex-col mt-2">
        {/* <img  className="flex w-32 h-32 mt-10 mb-5 rounded-full m-auto"src={userProfile.picture} alt="profile picture" /> */}
        <img  className="flex w-64 h-64 mt-10 mb-5 rounded m-auto"src={userProfile.picture} alt="profile picture" />
-       <div className="flex flex-col p-2 border">
+       <div className="flex flex-col p-2">
           <h1 className="text-center p-2 text-2xl font-bold">{userProfile.name}</h1>
           <p className="text-center p-3"><i className="font-thin text-wrap text-center">{userProfile.email}</i>
           </p>

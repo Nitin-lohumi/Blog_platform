@@ -12,9 +12,9 @@ const Home = () => {
   const [NavigatePost, setNavigatePost] = useState(true);
   const [navigateCreatePost, setNavigateCreatePost] = useState(false);
   const [NavigateProfile, setNavigateProfile] = useState(false);
-  const [activeHere,setActiveHere] = useState("post");
-  const [PostId,setPostIds] =useState("");
-  const [imageProfile,setImageprofile] = useState(false);
+  const [activeHere, setActiveHere] = useState("post");
+  const [PostId, setPostIds] = useState("");
+  const [imageProfile, setImageprofile] = useState(false);
   const userData = async () => {
     try {
       const fetch = await axois.get("http://localhost:3000/auth/ShowUser", {
@@ -33,7 +33,7 @@ const Home = () => {
     navigate("/home/posts");
     setActiveHere("post");
   }, []);
-  
+
   const handleNavigatePost = () => {
     setActiveHere("post");
     setNavigateProfile(false);
@@ -54,30 +54,56 @@ const Home = () => {
   };
   return (
     <>
-      <Context.Provider value={{ProfileData:DataUser}}>
-      <div className="homepage w-full">
-        <div className="Content max-w-screen">
-          <Header
-            activeHere={activeHere}
-            handleNavigatePost={handleNavigatePost}
-            handleNavigateCreateBlog={handleNavigateCreateBlog}
-            handleNavigateProfile={handleNavigateProfile}
+      <Context.Provider value={{ ProfileData: DataUser }}>
+        <div className="homepage w-full">
+          <div className="Content max-w-screen">
+            <Header
+              activeHere={activeHere}
+              handleNavigatePost={handleNavigatePost}
+              handleNavigateCreateBlog={handleNavigateCreateBlog}
+              handleNavigateProfile={handleNavigateProfile}
             />
 
-          <div className="Container w-full border" style={{display:NavigateProfile?"flex":"grid"}} >
-            <div className="Profile_container" style={{display:NavigateProfile?"none":"flex"}}>
-              <Profile postId={PostId} setImageprofile={setImageprofile}/>
-            </div>  
-            <div className="pt-3 text-center Blog_Post">
-              {NavigatePost ?
-               <Post imageProfile={imageProfile} setPostIds={setPostIds} 
-               NavigateProfile={NavigateProfile} handleNavigateCreateBlog={handleNavigateCreateBlog} /> :
-               navigateCreatePost?<CreateBlog setNavigatePost={setNavigatePost} setNavigateCreatePost={setNavigateCreatePost}/>: <Profile  postId={PostId} setImageprofile={setImageprofile} NavigateProfile={NavigateProfile} />}
+            <div
+              className="Container "
+              style={{ display: NavigateProfile ? "flex" : "grid" ,marginTop:"10px"}}
+            >
+              <div
+                className="Profile_container"
+                style={{
+                  display: NavigateProfile ? "none" : "flex",
+                  marginTop: "100px",
+                }}
+              >
+                <Profile postId={PostId} setImageprofile={setImageprofile} />
+              </div>
+              <div
+                className="pt-3 text-center Blog_Post"
+                style={{ marginTop: "100px" }}
+              >
+                {NavigatePost ? (
+                  <Post
+                    imageProfile={imageProfile}
+                    setPostIds={setPostIds}
+                    NavigateProfile={NavigateProfile}
+                    handleNavigateCreateBlog={handleNavigateCreateBlog}
+                  />
+                ) : navigateCreatePost ? (
+                  <CreateBlog
+                    setNavigatePost={setNavigatePost}
+                    setNavigateCreatePost={setNavigateCreatePost}
+                  />
+                ) : (
+                  <Profile
+                    postId={PostId}
+                    setImageprofile={setImageprofile}
+                    NavigateProfile={NavigateProfile}
+                  />
+                )}
+              </div>
             </div>
           </div>
-          
         </div>
-      </div>
       </Context.Provider>
     </>
   );
